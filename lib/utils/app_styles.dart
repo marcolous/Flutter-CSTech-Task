@@ -19,4 +19,10 @@ class AppStyles {
     fontSize: 15.sp,
     fontWeight: FontWeight.w400,
   );
+
+  static TextStyle style15BlackRegular = TextStyle(
+    color: Colors.black,
+    fontSize: 15.sp,
+    fontWeight: FontWeight.w400,
+  );
 }

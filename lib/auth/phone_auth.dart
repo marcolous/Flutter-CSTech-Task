@@ -1,6 +1,7 @@
 import 'package:cs_tech_task/auth/widgets/animated_switch.dart';
 import 'package:cs_tech_task/utils/app_images.dart';
 import 'package:cs_tech_task/utils/app_styles.dart';
+import 'package:cs_tech_task/widgets/custom_text_field.dart';
 import 'package:cs_tech_task/widgets/default_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -34,9 +35,12 @@ class PhoneAuth extends StatelessWidget {
               'Please provide your phone number',
               style: AppStyles.style15GreyRegular,
             ),
+            SizedBox(height: 10.h),
+            const CustomTextField(hintText: 'Phone'),
           ],
         ),
       ),
     );
   }
 }
+
