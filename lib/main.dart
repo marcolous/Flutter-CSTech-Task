@@ -1,4 +1,5 @@
 import 'package:cs_tech_task/auth/phone_auth.dart';
+import 'package:cs_tech_task/auth/pin_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -17,7 +18,7 @@ class CSTech extends StatelessWidget {
       child: MaterialApp(
         theme: appTheme(),
         debugShowCheckedModeBanner: false,
-        home: const PhoneAuth(),
+        home: const PinAuth(),
       ),
     );
   }
