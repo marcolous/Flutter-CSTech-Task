@@ -38,7 +38,7 @@ class PhoneAuth extends StatelessWidget {
                 style: AppStyles.style15GreyRegular,
               ),
               SizedBox(height: 15.h),
-              const CustomTextField(hintText: 'Phone'),
+              const CustomTextField(hintText: 'Phone', isPhone: true),
               SizedBox(height: 20.h),
               const CustomButton(title: 'Send Code'),
             ],
@@ -48,4 +48,3 @@ class PhoneAuth extends StatelessWidget {
     );
   }
 }
-

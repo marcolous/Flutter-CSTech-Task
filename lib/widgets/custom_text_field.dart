@@ -1,16 +1,28 @@
 import 'package:cs_tech_task/utils/app_styles.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class CustomTextField extends StatelessWidget {
-  const CustomTextField({super.key, required this.hintText, this.controller});
+class CustomTextField extends StatefulWidget {
+  const CustomTextField({
+    super.key,
+    required this.hintText,
+    this.controller,
+    this.isPhone = false,
+    this.isPassword = false,
+  });
   final String hintText;
   final TextEditingController? controller;
+  final bool isPhone;
+  final bool isPassword;
 
+  @override
+  State<CustomTextField> createState() => _CustomTextFieldState();
+}
+
+class _CustomTextFieldState extends State<CustomTextField> {
+  bool isSecure = true;
   @override
   Widget build(BuildContext context) {
     return Container(
-      constraints: BoxConstraints(maxWidth: 250.w),
       height: 55,
       decoration: BoxDecoration(
         color: Colors.white,
@@ -23,11 +35,23 @@ class CustomTextField extends StatelessWidget {
           }
           return null;
         },
-        keyboardType: TextInputType.phone,
+        obscureText: isSecure,
+        keyboardType:
+            widget.isPhone ? TextInputType.phone : TextInputType.emailAddress,
         style: AppStyles.style15BlackRegular,
-        controller: controller,
+        controller: widget.controller,
         decoration: InputDecoration(
-          hintText: hintText,
+          suffixIcon: widget.isPassword
+              ? IconButton(
+                  onPressed: () => setState(() => isSecure = !isSecure),
+                  icon: Icon(
+                    isSecure
+                        ? Icons.visibility_rounded
+                        : Icons.visibility_off_rounded,
+                  ),
+                )
+              : null,
+          hintText: widget.hintText,
           hintStyle: AppStyles.style15GreyRegular,
           filled: true,
           fillColor: Colors.white,
