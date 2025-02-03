@@ -1,8 +1,7 @@
 import 'package:cs_tech_task/auth/email_auth.dart';
 import 'package:cs_tech_task/auth/manager/auth_cubit.dart';
-import 'package:cs_tech_task/auth/phone_auth.dart';
-import 'package:cs_tech_task/auth/pin_auth.dart';
 import 'package:cs_tech_task/home/home.dart';
+import 'package:cs_tech_task/home/manager/home_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -19,6 +18,7 @@ class CSTech extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => AuthCubit()),
+        BlocProvider(create: (context) => HomeCubit()..fetchHomeData()),
       ],
       child: ScreenUtilInit(
         designSize: const Size(375, 812),
@@ -26,7 +26,7 @@ class CSTech extends StatelessWidget {
         child: MaterialApp(
           theme: appTheme(),
           debugShowCheckedModeBanner: false,
-          home: const PhoneAuth(),
+          home: const Home(),
         ),
       ),
     );

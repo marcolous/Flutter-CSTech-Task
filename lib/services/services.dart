@@ -1,4 +1,5 @@
 import 'package:cs_tech_task/models/device_model.dart';
+import 'package:cs_tech_task/models/home_model.dart';
 import 'package:cs_tech_task/models/login_model.dart';
 import 'package:cs_tech_task/models/otp_model.dart';
 import 'package:cs_tech_task/models/register_model.dart';
@@ -30,7 +31,9 @@ class ApiService {
     final paylod = data.toJson();
     try {
       final response = await _dio.post('/user/otp', data: paylod);
-      if (response.statusCode == 200) {
+      if (response.statusCode == 200 ||
+          response.statusCode == 201 ||
+          response.statusCode == 202) {
         return response;
       } else {
         return null;
@@ -40,11 +43,17 @@ class ApiService {
     }
   }
 
-  Future<Response> verifyOtp(OtpModel data) async {
+  Future<Response?> verifyOtp(OtpModel data) async {
     final paylod = data.toJson();
     try {
       final response = await _dio.post('/user/otp/verification', data: paylod);
-      return response;
+      if (response.statusCode == 200 ||
+          response.statusCode == 201 ||
+          response.statusCode == 202) {
+        return response;
+      } else {
+        return null;
+      }
     } on DioException catch (e) {
       throw _handleError(e);
     }
@@ -60,10 +69,14 @@ class ApiService {
     }
   }
 
-  Future<Response> getHomeWithoutPrice() async {
+  Future<HomeModel> getHomeWithoutPrice() async {
     try {
       final response = await _dio.get('/user/home/withoutPrice');
-      return response;
+
+      final responseData = response.data as Map<String, dynamic>;
+
+      final data = HomeModel.fromJson(responseData);
+      return data;
     } on DioException catch (e) {
       throw _handleError(e);
     }

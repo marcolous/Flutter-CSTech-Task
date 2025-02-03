@@ -1,8 +1,12 @@
+import 'package:cs_tech_task/home/manager/home_cubit.dart';
+import 'package:cs_tech_task/home/manager/home_state.dart';
 import 'package:cs_tech_task/home/widgets/search_widget.dart';
+import 'package:cs_tech_task/models/home_model.dart';
 import 'package:cs_tech_task/utils/app_images.dart';
 import 'package:cs_tech_task/utils/app_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class Home extends StatelessWidget {
@@ -10,33 +14,43 @@ class Home extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      drawer: const SafeArea(child: Drawer()),
-      appBar: homeAppBar(),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            SizedBox(height: 10.h),
-            cardsListView(),
-            SizedBox(height: 20.h),
-            KYCCard(),
-            SizedBox(height: 20.h),
-            categoriesListView(),
-            SizedBox(height: 20.h),
-            exclusiveListView(),
-          ],
-        ),
+    return BlocProvider(
+      create: (context) => HomeCubit()..fetchHomeData(),
+      child: BlocBuilder<HomeCubit, HomeState>(
+        builder: (context, state) {
+          return Scaffold(
+            drawer: const SafeArea(child: Drawer()),
+            appBar: homeAppBar(),
+            body: state.isLoading
+                ? const Center(child: CircularProgressIndicator())
+                : SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        SizedBox(height: 10.h),
+                        cardsListView(state.homeModel),
+                        SizedBox(height: 20.h),
+                        KYCCard(),
+                        SizedBox(height: 20.h),
+                        categoriesListView(state.homeModel),
+                        SizedBox(height: 20.h),
+                        exclusiveListView(state.homeModel),
+                      ],
+                    ),
+                  ),
+          );
+        },
       ),
     );
   }
 
-  Widget exclusiveListView() {
+  Widget exclusiveListView(HomeModel? homeModel) {
+    final exclusive = homeModel!.data.products;
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 20.w),
       decoration: const BoxDecoration(
         color: Color(0xff63b0cc),
       ),
-      height: 350.h,
+      height: 400.h,
       child: Column(
         children: [
           Padding(
@@ -72,12 +86,12 @@ class Home extends StatelessWidget {
                       children: [
                         Container(
                           width: 200.w,
-                          height: 200.w,
+                          height: 250.w,
                           padding: EdgeInsets.symmetric(horizontal: 20.w),
-                          child: AppImages.cards,
+                          child: Image.network(exclusive[index].icon),
                         ),
-                        Text('data'),
-                        Text('data'),
+                        Text(exclusive[index].label),
+                        // Text(),
                       ],
                     ),
                   ),
@@ -92,7 +106,7 @@ class Home extends StatelessWidget {
                         borderRadius: BorderRadius.circular(10.r),
                       ),
                       child: Text(
-                        'data',
+                        exclusive[index].offer,
                         style: AppStyles.style15WhiteSemiBold,
                       ),
                     ),
@@ -100,36 +114,41 @@ class Home extends StatelessWidget {
                 ],
               ),
               separatorBuilder: (context, index) => SizedBox(width: 15.w),
-              itemCount: 10,
+              itemCount: exclusive.length,
             ),
           ),
+          SizedBox(height: 20.h),
         ],
       ),
     );
   }
 
-  Widget categoriesListView() {
-    return SizedBox(
-      height: 100.h,
-      child: ListView.separated(
+  Widget categoriesListView(HomeModel? homeModel) {
+    final categories = homeModel!.data.category;
+
+    return Center(
+      child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
-        itemBuilder: (context, index) => Container(
-            // width: 70.w,
-            // height: 50,
-            child: Column(
-          children: [
-            CircleAvatar(
-              maxRadius: 35.r,
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(100.r),
-                child: AppImages.cards,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: List.generate(categories.length, (index) {
+            return Padding(
+              padding: EdgeInsets.symmetric(horizontal: 7.5.w),
+              child: Column(
+                children: [
+                  CircleAvatar(
+                    maxRadius: 30.r,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(100.r),
+                      child: Image.network(categories[index].icon),
+                    ),
+                  ),
+                  Text(categories[index].label),
+                ],
               ),
-            ),
-            Text('data'),
-          ],
-        )),
-        separatorBuilder: (context, index) => SizedBox(width: 15.w),
-        itemCount: 10,
+            );
+          }),
+        ),
       ),
     );
   }
@@ -191,17 +210,19 @@ class Home extends StatelessWidget {
     );
   }
 
-  Widget cardsListView() {
+  Widget cardsListView(HomeModel? homeModel) {
+    final banners = homeModel!.data.bannerOne;
     return SizedBox(
       height: 160.h,
       child: ListView.separated(
+        padding: EdgeInsets.symmetric(horizontal: 20.w),
         scrollDirection: Axis.horizontal,
         itemBuilder: (context, index) => ClipRRect(
           borderRadius: BorderRadius.circular(20.r),
-          child: AppImages.cards,
+          child: Image.network(banners[index].banner),
         ),
         separatorBuilder: (context, index) => SizedBox(width: 15.w),
-        itemCount: 10,
+        itemCount: banners.length,
       ),
     );
   }

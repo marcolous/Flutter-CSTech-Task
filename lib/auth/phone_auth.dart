@@ -21,7 +21,7 @@ class PhoneAuth extends StatefulWidget {
 }
 
 class _PhoneAuthState extends State<PhoneAuth> {
-  late TextEditingController controller;
+  TextEditingController controller = TextEditingController();
   late AuthCubit cubit;
   final ApiService service = ApiService();
   final LoginModel login = LoginModel();
@@ -29,7 +29,6 @@ class _PhoneAuthState extends State<PhoneAuth> {
   @override
   void initState() {
     super.initState();
-    controller = TextEditingController();
     cubit = BlocProvider.of<AuthCubit>(context);
   }
 
