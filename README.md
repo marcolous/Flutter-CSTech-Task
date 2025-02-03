@@ -15,8 +15,8 @@ This is a Flutter project that allows users to log in using their phone number. 
 1. **Clone the repository**:
 
    ```bash
-   git clone https://github.com/your-username/your-repository-name.git
-   cd your-repository-name
+   git clone https://github.com/marcolous/Flutter-CSTech-Task.git
+   cd Flutter-CSTech-Task
    ```
 
 2. **Install dependencies**:
