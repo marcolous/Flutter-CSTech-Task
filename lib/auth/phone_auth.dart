@@ -45,12 +45,19 @@ class _PhoneAuthState extends State<PhoneAuth> {
     cubit.setLoading(true);
 
     try {
-      await service.sendOtp(login);
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const PinAuth(),
-          ));
+      final res = await service.sendOtp(login);
+      if (res != null) {
+        final data = res.data as Map<String, dynamic>;
+        final deviceId = data['data']['deviceId'];
+        final userId = data['data']['userId'];
+        cubit.setDeviceId(deviceId);
+        cubit.setUserId(userId);
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const PinAuth(),
+            ));
+      }
     } finally {
       cubit.setLoading(false);
     }

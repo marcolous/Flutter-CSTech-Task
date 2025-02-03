@@ -26,14 +26,14 @@ class ApiService {
     }
   }
 
-  Future<bool> sendOtp(LoginModel data) async {
+  Future<Response?> sendOtp(LoginModel data) async {
     final paylod = data.toJson();
     try {
       final response = await _dio.post('/user/otp', data: paylod);
       if (response.statusCode == 200) {
-        return true;
+        return response;
       } else {
-        return false;
+        return null;
       }
     } on DioException catch (e) {
       throw _handleError(e);
