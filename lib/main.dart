@@ -1,8 +1,10 @@
 import 'package:cs_tech_task/auth/email_auth.dart';
+import 'package:cs_tech_task/auth/manager/auth_cubit.dart';
 import 'package:cs_tech_task/auth/phone_auth.dart';
 import 'package:cs_tech_task/auth/pin_auth.dart';
 import 'package:cs_tech_task/home/home.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 void main() {
@@ -14,13 +16,18 @@ class CSTech extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ScreenUtilInit(
-      designSize: const Size(375, 812),
-      minTextAdapt: true,
-      child: MaterialApp(
-        theme: appTheme(),
-        debugShowCheckedModeBanner: false,
-        home: const Home(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => AuthCubit()),
+      ],
+      child: ScreenUtilInit(
+        designSize: const Size(375, 812),
+        minTextAdapt: true,
+        child: MaterialApp(
+          theme: appTheme(),
+          debugShowCheckedModeBanner: false,
+          home: const PhoneAuth(),
+        ),
       ),
     );
   }

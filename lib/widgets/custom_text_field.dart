@@ -19,7 +19,14 @@ class CustomTextField extends StatefulWidget {
 }
 
 class _CustomTextFieldState extends State<CustomTextField> {
-  bool isSecure = true;
+  late bool isSecure;
+
+  @override
+  void initState() {
+    super.initState();
+    isSecure = widget.isPassword;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
