@@ -114,20 +114,22 @@ flutter pub run build_runner watch
 
 ### Phone Authentication Screen
 
-![Phone Auth Screen](screenshots/1.png)
+<img src="screenshots/1.png" width="300">
 
 ### OTP Verification Screen
 
-![OTP Verification Screen](screenshots/2.png)
+<img src="screenshots/2.png" width="300">
 
 ### Registration Screen
 
-![Registration Screen](screenshots/3.png)
+<img src="screenshots/3.png" width="300">
 
 ### Home Screen
 
-![Home Screen](screenshots/4.png)
-![Home Screen](screenshots/5.png)
+<img src="screenshots/4.png" width="300">
+<img src="screenshots/5.png" width="300">
+
+
 
 ## Contributing
 
