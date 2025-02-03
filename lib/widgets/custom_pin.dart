@@ -3,7 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pinput/pinput.dart';
 
 class CustomPinPut extends StatelessWidget {
-  const CustomPinPut({super.key, required this.pinController});
+  const CustomPinPut({super.key, required this.pinController, this.validator});
+  final String? Function(String?)? validator;
 
   final TextEditingController pinController;
 
@@ -27,6 +28,7 @@ class CustomPinPut extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Pinput(
+      validator: validator,
       separatorBuilder: (index) => SizedBox(width: 20.w),
       controller: pinController,
       autofocus: true,

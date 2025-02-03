@@ -6,6 +6,7 @@ class AuthCubit extends Cubit<AuthState> {
 
   String get userId => state.userId;
   String get deviceId => state.deviceId;
+  String get number => state.number;
 
   void setLoading(bool value) {
     emit(state.copyWith(isLoading: value));
@@ -17,5 +18,9 @@ class AuthCubit extends Cubit<AuthState> {
 
   void setDeviceId(String deviceId) {
     emit(state.copyWith(deviceId: deviceId));
+  }
+
+  void setNumber(String number) {
+    emit(state.copyWith(number: number));
   }
 }

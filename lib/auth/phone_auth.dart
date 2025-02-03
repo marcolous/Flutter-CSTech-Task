@@ -22,6 +22,7 @@ class PhoneAuth extends StatefulWidget {
 
 class _PhoneAuthState extends State<PhoneAuth> {
   TextEditingController controller = TextEditingController();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   late AuthCubit cubit;
   final ApiService service = ApiService();
   final LoginModel login = LoginModel();
@@ -39,33 +40,37 @@ class _PhoneAuthState extends State<PhoneAuth> {
   }
 
   void sendOtp() async {
-    login.mobileNumber = controller.text;
-    login.deviceId = '62b341aeb0ab5ebe28a758a3';
-    cubit.setLoading(true);
+    if (_formKey.currentState?.validate() ?? false) {
+      login.mobileNumber = controller.text;
+      login.deviceId = '62b341aeb0ab5ebe28a758a3';
+      cubit.setNumber(controller.text);
+      cubit.setLoading(true);
 
-    try {
-      final res = await service.sendOtp(login);
-      if (res != null) {
-        final data = res.data as Map<String, dynamic>;
-        final deviceId = data['data']['deviceId'];
-        final userId = data['data']['userId'];
-        cubit.setDeviceId(deviceId);
-        cubit.setUserId(userId);
-        Navigator.push(
+      try {
+        final res = await service.sendOtp(login);
+        if (res != null) {
+          final data = res.data as Map<String, dynamic>;
+          final deviceId = data['data']['deviceId'];
+          final userId = data['data']['userId'];
+          cubit.setDeviceId(deviceId);
+          cubit.setUserId(userId);
+          Navigator.push(
             context,
             MaterialPageRoute(
               builder: (context) => const PinAuth(),
-            ));
+            ),
+          );
+        }
+      } finally {
+        cubit.setLoading(false);
       }
-    } finally {
-      cubit.setLoading(false);
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const DefaultAppBar(),
+      appBar: const DefaultAppBar(showLeading: false),
       body: SizedBox(
         width: double.infinity,
         child: SingleChildScrollView(
@@ -92,11 +97,23 @@ class _PhoneAuthState extends State<PhoneAuth> {
               SizedBox(height: 15.h),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 70.w),
-                child: CustomTextField(
-                  hintText: 'Phone',
-                  isPhone: true,
-                  controller: controller,
-                  isPassword: false,
+                child: Form(
+                  key: _formKey,
+                  child: CustomTextField(
+                    hintText: 'Phone',
+                    isPhone: true,
+                    controller: controller,
+                    isPassword: false,
+                    // validator: (value) {
+                    //   if (value == null || value.isEmpty) {
+                    //     return 'Please enter your phone number';
+                    //   }
+                    //   if (!RegExp(r'^[0-9]+$').hasMatch(value)) {
+                    //     return 'Please enter a valid phone number';
+                    //   }
+                    //   return null;
+                    // },
+                  ),
                 ),
               ),
               SizedBox(height: 20.h),

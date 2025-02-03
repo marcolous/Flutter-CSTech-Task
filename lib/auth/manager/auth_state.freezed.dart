@@ -19,6 +19,7 @@ mixin _$AuthState {
   bool get isLoading => throw _privateConstructorUsedError;
   String get userId => throw _privateConstructorUsedError;
   String get deviceId => throw _privateConstructorUsedError;
+  String get number => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $AuthStateCopyWith<AuthState> get copyWith =>
@@ -30,7 +31,7 @@ abstract class $AuthStateCopyWith<$Res> {
   factory $AuthStateCopyWith(AuthState value, $Res Function(AuthState) then) =
       _$AuthStateCopyWithImpl<$Res, AuthState>;
   @useResult
-  $Res call({bool isLoading, String userId, String deviceId});
+  $Res call({bool isLoading, String userId, String deviceId, String number});
 }
 
 /// @nodoc
@@ -49,6 +50,7 @@ class _$AuthStateCopyWithImpl<$Res, $Val extends AuthState>
     Object? isLoading = null,
     Object? userId = null,
     Object? deviceId = null,
+    Object? number = null,
   }) {
     return _then(_value.copyWith(
       isLoading: null == isLoading
@@ -63,6 +65,10 @@ class _$AuthStateCopyWithImpl<$Res, $Val extends AuthState>
           ? _value.deviceId
           : deviceId // ignore: cast_nullable_to_non_nullable
               as String,
+      number: null == number
+          ? _value.number
+          : number // ignore: cast_nullable_to_non_nullable
+              as String,
     ) as $Val);
   }
 }
@@ -75,7 +81,7 @@ abstract class _$$AuthStateImplCopyWith<$Res>
       __$$AuthStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({bool isLoading, String userId, String deviceId});
+  $Res call({bool isLoading, String userId, String deviceId, String number});
 }
 
 /// @nodoc
@@ -92,6 +98,7 @@ class __$$AuthStateImplCopyWithImpl<$Res>
     Object? isLoading = null,
     Object? userId = null,
     Object? deviceId = null,
+    Object? number = null,
   }) {
     return _then(_$AuthStateImpl(
       isLoading: null == isLoading
@@ -106,6 +113,10 @@ class __$$AuthStateImplCopyWithImpl<$Res>
           ? _value.deviceId
           : deviceId // ignore: cast_nullable_to_non_nullable
               as String,
+      number: null == number
+          ? _value.number
+          : number // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -114,7 +125,10 @@ class __$$AuthStateImplCopyWithImpl<$Res>
 
 class _$AuthStateImpl implements _AuthState {
   const _$AuthStateImpl(
-      {this.isLoading = false, this.userId = '', this.deviceId = ''});
+      {this.isLoading = false,
+      this.userId = '',
+      this.deviceId = '',
+      this.number = ''});
 
   @override
   @JsonKey()
@@ -125,10 +139,13 @@ class _$AuthStateImpl implements _AuthState {
   @override
   @JsonKey()
   final String deviceId;
+  @override
+  @JsonKey()
+  final String number;
 
   @override
   String toString() {
-    return 'AuthState(isLoading: $isLoading, userId: $userId, deviceId: $deviceId)';
+    return 'AuthState(isLoading: $isLoading, userId: $userId, deviceId: $deviceId, number: $number)';
   }
 
   @override
@@ -140,11 +157,13 @@ class _$AuthStateImpl implements _AuthState {
                 other.isLoading == isLoading) &&
             (identical(other.userId, userId) || other.userId == userId) &&
             (identical(other.deviceId, deviceId) ||
-                other.deviceId == deviceId));
+                other.deviceId == deviceId) &&
+            (identical(other.number, number) || other.number == number));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, isLoading, userId, deviceId);
+  int get hashCode =>
+      Object.hash(runtimeType, isLoading, userId, deviceId, number);
 
   @JsonKey(ignore: true)
   @override
@@ -157,7 +176,8 @@ abstract class _AuthState implements AuthState {
   const factory _AuthState(
       {final bool isLoading,
       final String userId,
-      final String deviceId}) = _$AuthStateImpl;
+      final String deviceId,
+      final String number}) = _$AuthStateImpl;
 
   @override
   bool get isLoading;
@@ -165,6 +185,8 @@ abstract class _AuthState implements AuthState {
   String get userId;
   @override
   String get deviceId;
+  @override
+  String get number;
   @override
   @JsonKey(ignore: true)
   _$$AuthStateImplCopyWith<_$AuthStateImpl> get copyWith =>

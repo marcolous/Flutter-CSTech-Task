@@ -4,6 +4,7 @@ import 'package:cs_tech_task/home/widgets/search_widget.dart';
 import 'package:cs_tech_task/models/home_model.dart';
 import 'package:cs_tech_task/utils/app_images.dart';
 import 'package:cs_tech_task/utils/app_styles.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -14,32 +15,62 @@ class Home extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => HomeCubit()..fetchHomeData(),
-      child: BlocBuilder<HomeCubit, HomeState>(
-        builder: (context, state) {
-          return Scaffold(
-            drawer: const SafeArea(child: Drawer()),
-            appBar: homeAppBar(),
-            body: state.isLoading
-                ? const Center(child: CircularProgressIndicator())
-                : SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        SizedBox(height: 10.h),
-                        cardsListView(state.homeModel),
-                        SizedBox(height: 20.h),
-                        KYCCard(),
-                        SizedBox(height: 20.h),
-                        categoriesListView(state.homeModel),
-                        SizedBox(height: 20.h),
-                        exclusiveListView(state.homeModel),
-                      ],
-                    ),
+    return BlocBuilder<HomeCubit, HomeState>(
+      builder: (context, state) {
+        return Scaffold(
+          drawer: const SafeArea(child: Drawer()),
+          appBar: homeAppBar(),
+          bottomNavigationBar: bottomNavBar(),
+          body: state.isLoading
+              ? const Center(child: CircularProgressIndicator())
+              : SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      SizedBox(height: 10.h),
+                      cardsListView(state.homeModel),
+                      SizedBox(height: 20.h),
+                      KYCCard(),
+                      SizedBox(height: 20.h),
+                      categoriesListView(state.homeModel),
+                      SizedBox(height: 20.h),
+                      exclusiveListView(state.homeModel),
+                    ],
                   ),
-          );
-        },
-      ),
+                ),
+        );
+      },
+    );
+  }
+
+  Widget bottomNavBar() {
+    return BottomNavigationBar(
+      backgroundColor: Colors.white,
+      currentIndex: 0,
+      onTap: (value) {},
+      type: BottomNavigationBarType.fixed,
+      items: [
+        BottomNavigationBarItem(
+          backgroundColor: Colors.white,
+          icon: Image.asset('assets/images/home.PNG', width: 30),
+          label: 'Home',
+        ),
+        BottomNavigationBarItem(
+          icon: Image.asset('assets/images/category.PNG', width: 30),
+          label: 'Categories',
+        ),
+        BottomNavigationBarItem(
+          icon: Image.asset('assets/images/deals.PNG', width: 30),
+          label: 'Deals',
+        ),
+        BottomNavigationBarItem(
+          icon: Image.asset('assets/images/cart.PNG', width: 30),
+          label: 'Cart',
+        ),
+        BottomNavigationBarItem(
+          icon: Image.asset('assets/images/profile.PNG', width: 30),
+          label: 'Profile',
+        ),
+      ],
     );
   }
 

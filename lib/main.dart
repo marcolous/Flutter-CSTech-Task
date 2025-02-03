@@ -1,5 +1,6 @@
 import 'package:cs_tech_task/auth/email_auth.dart';
 import 'package:cs_tech_task/auth/manager/auth_cubit.dart';
+import 'package:cs_tech_task/auth/phone_auth.dart';
 import 'package:cs_tech_task/home/home.dart';
 import 'package:cs_tech_task/home/manager/home_cubit.dart';
 import 'package:flutter/material.dart';
@@ -26,7 +27,7 @@ class CSTech extends StatelessWidget {
         child: MaterialApp(
           theme: appTheme(),
           debugShowCheckedModeBanner: false,
-          home: const Home(),
+          home: const PhoneAuth(),
         ),
       ),
     );

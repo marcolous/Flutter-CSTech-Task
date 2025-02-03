@@ -8,5 +8,6 @@ class AuthState with _$AuthState {
     @Default(false) bool isLoading,
     @Default('') String userId,
     @Default('') String deviceId,
+    @Default('') String number,
   }) = _AuthState;
 }

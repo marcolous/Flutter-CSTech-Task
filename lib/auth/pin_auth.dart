@@ -22,6 +22,7 @@ class PinAuth extends StatefulWidget {
 
 class _PinAuthState extends State<PinAuth> {
   TextEditingController pinController = TextEditingController();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   late AuthCubit cubit;
   final ApiService service = ApiService();
   final OtpModel otp = OtpModel();
@@ -39,32 +40,34 @@ class _PinAuthState extends State<PinAuth> {
   }
 
   void submit() async {
-    otp.otp = pinController.text;
-    otp.userId = cubit.userId;
-    otp.deviceId = cubit.deviceId;
-    cubit.setLoading(true);
+    if (_formKey.currentState?.validate() ?? false) {
+      otp.otp = pinController.text;
+      otp.userId = cubit.userId;
+      otp.deviceId = cubit.deviceId;
+      cubit.setLoading(true);
 
-    try {
-      final res = await service.verifyOtp(otp);
-      if (res != null) {
-        final data = res.data as Map<String, dynamic>;
-        //TODO: check if the user registered before
-        // if (data['']) {
-        //   Navigator.push(
-        //       context,
-        //       MaterialPageRoute(
-        //         builder: (context) => const EmailAuth(),
-        //       ));
-        //   return;
-        // }
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const Home(),
-            ));
+      try {
+        final res = await service.verifyOtp(otp);
+        if (res != null) {
+          final data = res.data as Map<String, dynamic>;
+          //TODO: check if the user registered before
+          // if (data['']) {
+          //   Navigator.push(
+          //       context,
+          //       MaterialPageRoute(
+          //         builder: (context) => const EmailAuth(),
+          //       ));
+          //   return;
+          // }
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const Home(),
+              ));
+        }
+      } finally {
+        cubit.setLoading(false);
       }
-    } finally {
-      cubit.setLoading(false);
     }
   }
 
@@ -80,7 +83,6 @@ class _PinAuthState extends State<PinAuth> {
             children: [
               SizedBox(
                 height: 150.w,
-                // width: 200.w,
                 child: AppImages.pin,
               ),
               SizedBox(height: 20.h),
@@ -90,12 +92,26 @@ class _PinAuthState extends State<PinAuth> {
               ),
               SizedBox(height: 20.h),
               Text(
-                'We have sent a unique OTP number to your mobile +11111',
+                'We have sent a unique OTP number to your mobile +91${cubit.number}',
                 style: AppStyles.style15GreyRegular,
               ),
               SizedBox(height: 20.h),
-              Align(
-                child: CustomPinPut(pinController: pinController),
+              Form(
+                key: _formKey,
+                child: Align(
+                  child: CustomPinPut(
+                    pinController: pinController,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter the OTP';
+                      }
+                      if (value.length < 4) {
+                        return 'OTP must be 4 digits';
+                      }
+                      return null;
+                    },
+                  ),
+                ),
               ),
               SizedBox(height: 10.h),
               const TimerWithButton(),
